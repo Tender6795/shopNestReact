@@ -8,10 +8,9 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule)
 
   const config = new DocumentBuilder()
-      .setTitle('Nest test')
+      .setTitle('Shop nest')
       .setDescription('Description test')
       .setVersion('1.0.0')
-      .addTag('Tag test')
       .build()
 
   const document = SwaggerModule.createDocument(app, config)
