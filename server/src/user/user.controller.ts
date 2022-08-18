@@ -23,13 +23,22 @@ export class UserController {
   findAll() {
     return this.userService.findAll();
   }
+
   @ApiOperation({ summary: 'Get user by id' })
   @ApiResponse({ status: 200, type: [User] })
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  findOneById(@Param('id') id: string) {
+    return this.userService.findOneById(+id);
   }
 
+ @ApiOperation({ summary: 'Get user by id' })
+  @ApiResponse({ status: 200, type: [User] })
+  @Get('/email/:email')
+  findOneByEmail(@Param('email') email: string) {
+    return this.userService.findOneByEmail(email);
+  }
+  @ApiOperation({ summary: 'Update by id' })
+  @ApiResponse({ status: 200, type: User })
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(+id, updateUserDto);

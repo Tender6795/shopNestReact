@@ -15,11 +15,27 @@ GET http://localhost:5000/user HTTP/1.1
 ###
 
 //Get by id
-GET http://localhost:5000/user/1 HTTP/1.1
+GET http://localhost:5000/user/2 HTTP/1.1
+
+###
+
+//Get by email
+GET http://localhost:5000/user/email/tender679511@gmail.com HTTP/1.1
 
 ###
 
 //Delete by id
-DELETE  http://localhost:5000/user/1 HTTP/1.1
+DELETE  http://localhost:5000/user/2 HTTP/1.1
 
+###
+
+//Update by id
+PATCH   http://localhost:5000/user/2 HTTP/1.1
+content-type: application/json
+
+{
+    "firstName": "firstName",
+    "lastName": "lastName",
+    "patronymic":"patronymic"
+}
 ###

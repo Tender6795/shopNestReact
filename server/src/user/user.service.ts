@@ -19,19 +19,29 @@ export class UserService {
     return users
   }
 
-  async findOne(id: number) {
+  async findOneById(id: number) {
     const user = await this.userRepository.findByPk(id)
-    if(!user) throw new HttpException('User not found', HttpStatus.NOT_FOUND)
+    if (!user) throw new HttpException('User not found', HttpStatus.NOT_FOUND)
     return user
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async findOneByEmail(email: string) {
+    const user = await this.userRepository.findOne({ where: { email } })
+    if (!user) throw new HttpException('User not found', HttpStatus.NOT_FOUND)
+    return user
+  }
+
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    const user = await this.userRepository.findByPk(id)
+    if (!user) throw new HttpException('User not found', HttpStatus.NOT_FOUND)
+    const isModified = await user.update(updateUserDto)
+    if(!isModified) throw new HttpException('User not found', HttpStatus.NOT_MODIFIED)
+    return user
   }
 
   async remove(id: number) {
     const isDelete = await this.userRepository.destroy({ where: { id } })
-    if(!isDelete) throw new HttpException('User not delete', HttpStatus.NOT_FOUND)
+    if (!isDelete) throw new HttpException('User not delete', HttpStatus.NOT_FOUND)
     return isDelete
   }
 }
