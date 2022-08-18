@@ -1,5 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Model, Table, Column, DataType, BelongsToMany, HasMany } from 'sequelize-typescript'
+import { Address } from 'src/addresses/entities/address.entity';
+import { UserAddresses } from './user-address.entity';
 
 interface UserCreationAttrs {
     email: string;
@@ -34,4 +36,7 @@ export class User extends Model<User, UserCreationAttrs> {
     @ApiProperty({ example: 'https://www.meme-arsenal.com/memes/5c4c0337787934ae05d4c5093db3fbfa.jpg', description: 'path to avatar', required: false })
     @Column({ type: DataType.STRING })
     avatar?: string;
+
+    @BelongsToMany(()=>Address, ()=> UserAddresses)
+    addresses: Address[];
 }

@@ -6,6 +6,9 @@ import * as path from "path";
 
 import { UserModule } from './user/user.module';
 import { User } from './user/entities/user.entity';
+import { AddressesModule } from './addresses/addresses.module';
+import { Address } from './addresses/entities/address.entity';
+import { UserAddresses } from './user/entities/user-address.entity';
 
 @Module({
   imports: [
@@ -22,10 +25,11 @@ import { User } from './user/entities/user.entity';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      models: [User],
+      models: [User , Address, UserAddresses ],
       autoLoadModels: true
     }),
-    UserModule
+    UserModule,
+    AddressesModule,
   ],
   controllers: [],
   providers: [],
