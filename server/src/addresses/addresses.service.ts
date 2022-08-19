@@ -1,26 +1,40 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
 import { CreateAddressDto } from './dto/create-address.dto';
 import { UpdateAddressDto } from './dto/update-address.dto';
+import { Address } from './entities/address.entity';
 
 @Injectable()
 export class AddressesService {
-  create(createAddressDto: CreateAddressDto) {
-    return 'This action adds a new address';
+  constructor(@InjectModel(Address) private addressesRepository: typeof Address) { }
+
+  async create(createAddressDto: CreateAddressDto) {
+    const address = await this.addressesRepository.create(createAddressDto)
+    return address
   }
 
-  findAll() {
-    return `This action returns all addresses`;
+  async findAll() {
+    const address = await this.addressesRepository.findAll()
+    return address
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} address`;
+  async findOne(id: number) {
+    const address = await this.addressesRepository.findByPk(id)
+    if (!address) throw new HttpException('Address not found', HttpStatus.NOT_FOUND)
+    return address
   }
 
-  update(id: number, updateAddressDto: UpdateAddressDto) {
-    return `This action updates a #${id} address`;
+  async update(id: number, updateAddressDto: UpdateAddressDto) {
+    const address = await this.addressesRepository.findByPk(id)
+    if (!address) throw new HttpException('Address not found', HttpStatus.NOT_FOUND)
+    const isModified = await address.update(updateAddressDto)
+    if (!isModified) throw new HttpException('Address not modified', HttpStatus.NOT_MODIFIED)
+    return address
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} address`;
+  async remove(id: number) {
+    const isDelete = await this.addressesRepository.destroy({ where: { id } })
+    if (!isDelete) throw new HttpException('Address not delete', HttpStatus.NOT_FOUND)
+    return isDelete
   }
 }

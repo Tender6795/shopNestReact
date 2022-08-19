@@ -35,7 +35,7 @@ export class UserService {
     const user = await this.userRepository.findByPk(id)
     if (!user) throw new HttpException('User not found', HttpStatus.NOT_FOUND)
     const isModified = await user.update(updateUserDto)
-    if(!isModified) throw new HttpException('User not found', HttpStatus.NOT_MODIFIED)
+    if(!isModified) throw new HttpException('User not modified', HttpStatus.NOT_MODIFIED)
     return user
   }
 

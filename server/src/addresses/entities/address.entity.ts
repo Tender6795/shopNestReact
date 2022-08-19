@@ -7,7 +7,7 @@ interface AddressCreationAttr {
     country: string;
     city: string;
     street: string;
-    houseNumber: number
+    houseNumber: string
     postalCode: number
 }
 
