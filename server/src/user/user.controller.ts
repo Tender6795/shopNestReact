@@ -9,13 +9,13 @@ import { FileInterceptor } from '@nestjs/platform-express';
 @ApiTags('Users')
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) { }
 
   @ApiOperation({ summary: 'Create user' })
   @ApiResponse({ status: 200, type: User })
   @UseInterceptors(FileInterceptor('image'))
   @Post()
-  create(@Body() createUserDto: CreateUserDto,  @UploadedFile() image) {
+  create(@Body() createUserDto: CreateUserDto, @UploadedFile() image) {
     return this.userService.create(createUserDto, image);
   }
 
@@ -33,17 +33,19 @@ export class UserController {
     return this.userService.findOneById(+id);
   }
 
- @ApiOperation({ summary: 'Get user by id' })
+  @ApiOperation({ summary: 'Get user by id' })
   @ApiResponse({ status: 200, type: [User] })
   @Get('/email/:email')
   findOneByEmail(@Param('email') email: string) {
     return this.userService.findOneByEmail(email);
   }
+
   @ApiOperation({ summary: 'Update by id' })
   @ApiResponse({ status: 200, type: User })
+  @UseInterceptors(FileInterceptor('image'))
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
+  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto, @UploadedFile() image) {
+    return this.userService.update(+id, updateUserDto, image);
   }
 
   @ApiOperation({ summary: 'Delete by id' })

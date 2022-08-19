@@ -8,18 +8,17 @@ import { User } from './entities/user.entity';
 @Injectable()
 export class UserService {
   constructor(@InjectModel(User) private userRepository: typeof User,
-  private fileService: FilesService
+    private fileService: FilesService
   ) { }
 
   async create(createUserDto: CreateUserDto, image: any) {
     try {
       const fileName = await this.fileService.createFile(image)
-      const user = await this.userRepository.create({...createUserDto, avatar: fileName})
+      const user = await this.userRepository.create({ ...createUserDto, avatar: fileName })
       return user
     } catch (error) {
       throw new HttpException(error.errors, HttpStatus.BAD_REQUEST)
     }
-  
   }
 
   async findAll() {
@@ -39,11 +38,12 @@ export class UserService {
     return user
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
+  async update(id: number, updateUserDto: UpdateUserDto, image: any) {
     const user = await this.userRepository.findByPk(id)
     if (!user) throw new HttpException('User not found', HttpStatus.NOT_FOUND)
-    const isModified = await user.update(updateUserDto)
-    if(!isModified) throw new HttpException('User not modified', HttpStatus.NOT_MODIFIED)
+    const fileName = await this.fileService.createFile(image)
+    const isModified = await user.update({ ...updateUserDto, avatar: fileName })
+    if (!isModified) throw new HttpException('User not modified', HttpStatus.NOT_MODIFIED)
     return user
   }
 

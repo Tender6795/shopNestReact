@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsEmail, IsString, Length  } from "class-validator";
+import { IsEmail, IsOptional, IsString, Length  } from "class-validator";
 
 export class CreateUserDto {
     @ApiProperty({ example: 'user@gmail.com', description: 'Unique email' })
@@ -13,5 +13,7 @@ export class CreateUserDto {
     readonly password: string;
 
     @ApiProperty({ example: 'https://www.meme-arsenal.com/memes/5c4c0337787934ae05d4c5093db3fbfa.jpg', description: 'avatar', required: false })
+    @IsOptional()
+    @Length(4, 16, { message: 'must be 4 - 16 symbols' })
     readonly avatar?: string;
 }
