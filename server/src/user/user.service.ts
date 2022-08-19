@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { FilesService } from 'src/files/files.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
@@ -7,11 +8,18 @@ import { User } from './entities/user.entity';
 @Injectable()
 export class UserService {
   constructor(@InjectModel(User) private userRepository: typeof User,
+  private fileService: FilesService
   ) { }
 
-  async create(createUserDto: CreateUserDto) {
-    const user = await this.userRepository.create(createUserDto)
-    return user
+  async create(createUserDto: CreateUserDto, image: any) {
+    try {
+      const fileName = await this.fileService.createFile(image)
+      const user = await this.userRepository.create({...createUserDto, avatar: fileName})
+      return user
+    } catch (error) {
+      throw new HttpException(error.errors, HttpStatus.BAD_REQUEST)
+    }
+  
   }
 
   async findAll() {

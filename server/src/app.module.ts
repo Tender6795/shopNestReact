@@ -9,6 +9,7 @@ import { User } from './user/entities/user.entity';
 import { AddressesModule } from './addresses/addresses.module';
 import { Address } from './addresses/entities/address.entity';
 import { UserAddresses } from './user/entities/user-address.entity';
+import { FilesModule } from './files/files.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { UserAddresses } from './user/entities/user-address.entity';
     }),
     UserModule,
     AddressesModule,
+    FilesModule,
   ],
   controllers: [],
   providers: [],

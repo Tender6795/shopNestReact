@@ -6,6 +6,7 @@ import { UserAddresses } from './user-address.entity';
 interface UserCreationAttrs {
     email: string;
     password: string;
+    avatar?: string
 }
 @Table({ tableName: 'users' })
 export class User extends Model<User, UserCreationAttrs> {

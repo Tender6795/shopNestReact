@@ -9,8 +9,12 @@ export class AddressesService {
   constructor(@InjectModel(Address) private addressesRepository: typeof Address) { }
 
   async create(createAddressDto: CreateAddressDto) {
-    const address = await this.addressesRepository.create(createAddressDto)
-    return address
+    try {
+      const address = await this.addressesRepository.create(createAddressDto)
+      return address
+    } catch (error) {
+      throw new HttpException(error.errors, HttpStatus.BAD_REQUEST)
+    }
   }
 
   async findAll() {
