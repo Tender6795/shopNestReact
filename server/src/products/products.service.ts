@@ -19,6 +19,7 @@ async  create(createProductDto: CreateProductDto) {
 
  async findAll() {
     const product = await this.productsRepositoy.findAll()
+    return product
   }
 
  async findOne(id: number) {
