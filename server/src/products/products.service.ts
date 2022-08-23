@@ -1,14 +1,20 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { ImagesService } from 'src/images/images.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
 
 @Injectable()
 export class ProductsService {
-  constructor (@InjectModel(Product) private productsRepositoy: typeof Product){}
 
-async  create(createProductDto: CreateProductDto) {
+  constructor(
+    @InjectModel(Product) 
+    private productsRepositoy: typeof Product,
+    private imageService: ImagesService
+  ) { }
+
+  async create(createProductDto: CreateProductDto) {
     try {
       const product = await this.productsRepositoy.create(createProductDto)
       return product
@@ -17,12 +23,12 @@ async  create(createProductDto: CreateProductDto) {
     }
   }
 
- async findAll() {
+  async findAll() {
     const product = await this.productsRepositoy.findAll()
     return product
   }
 
- async findOne(id: number) {
+  async findOne(id: number) {
     const product = await this.productsRepositoy.findByPk(id)
     if (!product) throw new HttpException('Product not found', HttpStatus.NOT_FOUND)
     return product
@@ -40,5 +46,10 @@ async  create(createProductDto: CreateProductDto) {
     const isDelete = await this.productsRepositoy.destroy({ where: { id } })
     if (!isDelete) throw new HttpException('Product not delete', HttpStatus.NOT_FOUND)
     return isDelete
+  }
+
+  async addImage(id: string, image: any) {
+    const newImage = await this.imageService.create(+id, image)
+    return newImage
   }
 }

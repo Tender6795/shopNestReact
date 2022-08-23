@@ -12,6 +12,8 @@ import { UserAddresses } from './user/entities/user-address.entity';
 import { FilesModule } from './files/files.module';
 import { ProductsModule } from './products/products.module';
 import { Product } from './products/entities/product.entity';
+import { ImagesModule } from './images/images.module';
+import { Image } from './images/entities/image.entity';
 
 @Module({
   imports: [
@@ -28,13 +30,14 @@ import { Product } from './products/entities/product.entity';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      models: [User , Address, UserAddresses, Product ],
+      models: [User , Address, UserAddresses, Product, Image],
       autoLoadModels: true
     }),
     UserModule,
     AddressesModule,
     FilesModule,
     ProductsModule,
+    ImagesModule,
   ],
   controllers: [],
   providers: [],
