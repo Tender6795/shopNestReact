@@ -14,11 +14,12 @@ export class ImagesService {
     private fileService: FilesService
   ) { }
 
-  async create(productId: number, image: any) {
+  async create(productId: number, images: any) {
     try {
-      const path = await this.fileService.createFile(image)
-      const newImage = await this.imageRepository.create({ productId, path })
-      return newImage
+      images.forEach(async image => {
+        const {originalname} = image
+        await this.imageRepository.create({ productId, path: originalname })
+      });
     } catch (error) {
       throw new HttpException(error.errors, HttpStatus.BAD_REQUEST)
     }

@@ -48,8 +48,8 @@ export class ProductsService {
     return isDelete
   }
 
-  async addImage(id: string, image: any) {
-    const newImage = await this.imageService.create(+id, image)
+  async addImages(id: string, images: any) {
+    const newImage = await this.imageService.create(+id, images)
     return newImage
   }
 }

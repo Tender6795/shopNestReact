@@ -14,6 +14,7 @@ import { ProductsModule } from './products/products.module';
 import { Product } from './products/entities/product.entity';
 import { ImagesModule } from './images/images.module';
 import { Image } from './images/entities/image.entity';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import { Image } from './images/entities/image.entity';
       envFilePath: `.${process.env.NODE_ENV}.env`
     }),
     ServeStaticModule.forRoot({
-      rootPath: path.resolve(__dirname, 'static')
+      rootPath: path.resolve(__dirname, 'static/uploads')
     }),
     SequelizeModule.forRoot({
       dialect: 'postgres',
@@ -32,6 +33,9 @@ import { Image } from './images/entities/image.entity';
       database: process.env.POSTGRES_DB,
       models: [User , Address, UserAddresses, Product, Image],
       autoLoadModels: true
+    }),
+    MulterModule.register({
+      dest: 'dist/static/uploads',
     }),
     UserModule,
     AddressesModule,
