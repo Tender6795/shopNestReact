@@ -22,7 +22,7 @@ import { MulterModule } from '@nestjs/platform-express';
       envFilePath: `.${process.env.NODE_ENV}.env`
     }),
     ServeStaticModule.forRoot({
-      rootPath: path.resolve(__dirname, 'static/uploads')
+      rootPath: path.resolve(__dirname, 'static')
     }),
     SequelizeModule.forRoot({
       dialect: 'postgres',
