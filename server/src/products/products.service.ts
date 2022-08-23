@@ -9,14 +9,18 @@ import { Product } from './entities/product.entity';
 export class ProductsService {
 
   constructor(
-    @InjectModel(Product) 
+    @InjectModel(Product)
     private productsRepositoy: typeof Product,
     private imageService: ImagesService
   ) { }
 
-  async create(createProductDto: CreateProductDto) {
+  async create(createProductDto: CreateProductDto, images?: any) {
     try {
       const product = await this.productsRepositoy.create(createProductDto)
+      if (images) {
+        const { id } = product
+        this.addImages(id, images)
+      }
       return product
     } catch (error) {
       throw new HttpException(error.errors, HttpStatus.BAD_REQUEST)
@@ -48,8 +52,8 @@ export class ProductsService {
     return isDelete
   }
 
-  async addImages(id: string, images: any) {
-    const newImage = await this.imageService.create(+id, images)
+  async addImages(id: number, images: any) {
+    const newImage = await this.imageService.create(id, images)
     return newImage
   }
 }

@@ -18,9 +18,16 @@ export class ProductsController {
 
   @ApiOperation({ summary: 'Create product' })
   @ApiResponse({ status: 200, type: Product })
+  @UseInterceptors(FilesInterceptor('image', 10, {
+    storage: diskStorage({
+      destination: 'dist/static/uploads',
+      filename: editFileName,
+    }),
+    fileFilter: imageFileFilter,
+  }))
   @Post()
-  create(@Body() createProductDto: CreateProductDto) {
-    return this.productsService.create(createProductDto);
+  create(@Body() createProductDto: CreateProductDto, @UploadedFiles() images) {
+    return this.productsService.create(createProductDto, images);
   }
 
   @ApiOperation({ summary: 'Get all product' })
@@ -64,6 +71,6 @@ export class ProductsController {
   }))
   @Patch('/addImage/:id')
   addImages(@Param('id') id: string, @UploadedFiles() images) {
-    return this.productsService.addImages(id, images)
+    return this.productsService.addImages(+id, images)
   }
 }
