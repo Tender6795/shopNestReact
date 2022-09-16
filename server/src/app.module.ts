@@ -15,6 +15,7 @@ import { Product } from './products/entities/product.entity';
 import { ImagesModule } from './images/images.module';
 import { Image } from './images/entities/image.entity';
 import { MulterModule } from '@nestjs/platform-express';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { MulterModule } from '@nestjs/platform-express';
     FilesModule,
     ProductsModule,
     ImagesModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],

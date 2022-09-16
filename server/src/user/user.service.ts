@@ -11,7 +11,7 @@ export class UserService {
     private fileService: FilesService
   ) { }
 
-  async create(createUserDto: CreateUserDto, image: any) {
+  async create(createUserDto: CreateUserDto, image?: any) {
     try {
       const fileName = await this.fileService.createFile(image)
       const user = await this.userRepository.create({ ...createUserDto, avatar: fileName })
