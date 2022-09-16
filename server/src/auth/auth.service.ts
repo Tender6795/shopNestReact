@@ -31,8 +31,7 @@ export class AuthService {
     }
 
     private async generateToken(user: User) {
-        // const payload = { email: user.email, id: user.id, roles: user.roles }
-        const payload = { email: user.email, id: user.id }
+        const payload = { email: user.email, id: user.id, roles: user.roles }  // нет роли (
         return {
             token: this.jwtService.sign(payload)
         }
@@ -40,6 +39,7 @@ export class AuthService {
 
     private async validateUser(userDto: CreateUserDto) {
         const user = await this.userService.findOneByEmail(userDto.email)
+        console.log(user)
         const passwordEquals = await bcrypt.compare(userDto.password, user.password)
         if (user && passwordEquals) {
             return user

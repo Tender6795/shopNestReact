@@ -65,6 +65,6 @@ export class UserController {
   @UseGuards(RolesGuard)
   @Post('/role')
   addRole(@Body() dto: AddRoleDto) {
-    return this.userService.addRole(dto)  //
+    return this.userService.addRole(dto) 
   }
 }

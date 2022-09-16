@@ -3,7 +3,7 @@ POST http://localhost:5000/user HTTP/1.1
 content-type: application/json
 
 {
-    "email": "tender67951@gmail.com",
+    "email": "tender67951Admin21@gmail.com",
     "password": "12345"
 }
 
@@ -39,3 +39,13 @@ content-type: application/json
     "patronymic":"patronymic"
 }
 ###
+
+//Add role
+POST http://localhost:5000/user/role HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlbmRlcjY3OTUxQWRtaW4yMTIyQGdtYWlsLmNvbSIsImlkIjoyNCwicm9sZXMiOlt7ImlkIjoyLCJ2YWx1ZSI6IkFETUlOIiwiZGVzY3JpcHRpb24iOiJWZXJ5IGltcG9ydGFudCByb2xlIiwiY3JlYXRlZEF0IjoiMjAyMi0wOS0xNlQwOToyOTozMS44NDlaIiwidXBkYXRlZEF0IjoiMjAyMi0wOS0xNlQwOToyOTozMS44NDlaIiwiVXNlclJvbGVzIjp7ImlkIjoyLCJyb2xlSWQiOjIsInVzZXJJZCI6MjR9fV0sImlhdCI6MTY2MzMyNTk0MiwiZXhwIjoxNjYzNDEyMzQyfQ.ceY01sivpFH656rcx9w59bFkTTJgxcPW8SLCx_PPp0U
+
+{
+     "value": "USER",
+     "userId" : 2
+}

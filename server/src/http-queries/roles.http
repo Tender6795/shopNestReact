@@ -3,7 +3,7 @@ POST http://localhost:5000/roles HTTP/1.1
 content-type: application/json
 
 {
-    "value": "USER",
+    "value": "ADMIN",
     "description": "Very important role"
 }
 

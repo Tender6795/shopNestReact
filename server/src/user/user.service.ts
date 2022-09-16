@@ -1,5 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import * as bcrypt from 'bcryptjs'
+
 import { FilesService } from 'src/files/files.service';
 import { RolesService } from 'src/roles/roles.service';
 import { AddRoleDto } from './dto/add-role.dto';
@@ -17,7 +19,8 @@ export class UserService {
   async create(createUserDto: CreateUserDto, image?: any) {
     try {
       const fileName = await this.fileService.createFile(image)
-      const user = await this.userRepository.create({ ...createUserDto, avatar: fileName })
+      const hashPassword = await bcrypt.hash(createUserDto.password, 5)
+      const user = await this.userRepository.create({ ...createUserDto, password: hashPassword,avatar: fileName })
       const role = await this.roleService.getRoleByValue("USER")
       await user.$set('roles', [role.id])
       user.roles = [role]
@@ -39,7 +42,7 @@ export class UserService {
   }
 
   async findOneByEmail(email: string) {
-    const user = await this.userRepository.findOne({ where: { email } })
+    const user = await this.userRepository.findOne({ where: { email }, include: { all: true } })
     if (!user) throw new HttpException('User not found', HttpStatus.NOT_FOUND)
     return user
   }
