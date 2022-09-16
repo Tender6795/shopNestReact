@@ -17,6 +17,8 @@ import { Image } from './images/entities/image.entity';
 import { MulterModule } from '@nestjs/platform-express';
 import { AuthModule } from './auth/auth.module';
 import { RolesModule } from './roles/roles.module';
+import { Role } from './roles/entities/role.entity';
+import { UserRoles } from './roles/entities/user-roles.enitty';
 
 @Module({
   imports: [
@@ -33,7 +35,7 @@ import { RolesModule } from './roles/roles.module';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      models: [User , Address, UserAddresses, Product, Image],
+      models: [User , Address, UserAddresses, Product, Image, Role, UserRoles],
       autoLoadModels: true
     }),
     MulterModule.register({
