@@ -39,7 +39,7 @@ export class ProductsController {
 
 
   @ApiOperation({ summary: 'Get product by id' })
-  @ApiResponse({ status: 200, type: [Product] })
+  @ApiResponse({ status: 200, type: Product })
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.productsService.findOne(+id);
