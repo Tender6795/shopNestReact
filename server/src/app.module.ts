@@ -23,6 +23,7 @@ import { AttributesModule } from './attributes/attributes.module';
 import { Attribute } from './attributes/entities/attribute.entity';
 import { ProductAttributes } from './attributes/entities/product-attributes';
 import { CommentsModule } from './comments/comments.module';
+import { Comment } from './comments/entities/comment.entity';
 
 @Module({
   imports: [
@@ -39,7 +40,7 @@ import { CommentsModule } from './comments/comments.module';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      models: [User, Address, UserAddresses, Product, Image, Role, UserRoles, Attribute, ProductAttributes],
+      models: [User, Address, UserAddresses, Product, Image, Role, UserRoles, Attribute, ProductAttributes, Comment],
       autoLoadModels: true
     }),
     MulterModule.register({
