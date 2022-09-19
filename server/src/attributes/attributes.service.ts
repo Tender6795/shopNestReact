@@ -28,13 +28,13 @@ export class AttributesService {
   }
 
   async findOne(id: number) {
-    const attribute = await this.attributesRepository.findByPk(id)
+    const attribute = await this.attributesRepository.findByPk(id, { include: { all: true } })
     if (!attribute) throw new HttpException('Attribute not found', HttpStatus.NOT_FOUND)
     return attribute
   }
 
   async update(id: number, updateAttributeDto: UpdateAttributeDto) {
-    const attribute = await this.attributesRepository.findByPk(id)
+    const attribute = await this.attributesRepository.findByPk(id, { include: { all: true } })
     if (!attribute) throw new HttpException('Attribute not found', HttpStatus.NOT_FOUND)
     const isModified = await attribute.update(updateAttributeDto)
     if (!isModified) throw new HttpException('Attribute not modified', HttpStatus.NOT_MODIFIED)

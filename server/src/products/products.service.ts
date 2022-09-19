@@ -28,18 +28,18 @@ export class ProductsService {
   }
 
   async findAll() {
-    const product = await this.productsRepositry.findAll()
+    const product = await this.productsRepositry.findAll({ include: { all: true } })
     return product
   }
 
   async findOne(id: number) {
-    const product = await this.productsRepositry.findByPk(id)
+    const product = await this.productsRepositry.findByPk(id, { include: { all: true } })
     if (!product) throw new HttpException('Product not found', HttpStatus.NOT_FOUND)
     return product
   }
 
   async update(id: number, updateProductDto: UpdateProductDto) {
-    const product = await this.productsRepositry.findByPk(id)
+    const product = await this.productsRepositry.findByPk(id, { include: { all: true } })
     if (!product) throw new HttpException('Porduct not found', HttpStatus.NOT_FOUND)
     const isModified = await product.update(updateProductDto)
     if (!isModified) throw new HttpException('Porduct not modified', HttpStatus.NOT_MODIFIED)
