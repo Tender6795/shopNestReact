@@ -19,6 +19,9 @@ import { AuthModule } from './auth/auth.module';
 import { RolesModule } from './roles/roles.module';
 import { Role } from './roles/entities/role.entity';
 import { UserRoles } from './roles/entities/user-roles.enitty';
+import { AttributesModule } from './attributes/attributes.module';
+import { Attribute } from './attributes/entities/attribute.entity';
+import { ProductAttributes } from './attributes/entities/product-attributes';
 
 @Module({
   imports: [
@@ -35,7 +38,7 @@ import { UserRoles } from './roles/entities/user-roles.enitty';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      models: [User , Address, UserAddresses, Product, Image, Role, UserRoles],
+      models: [User, Address, UserAddresses, Product, Image, Role, UserRoles, Attribute, ProductAttributes],
       autoLoadModels: true
     }),
     MulterModule.register({
@@ -48,6 +51,7 @@ import { UserRoles } from './roles/entities/user-roles.enitty';
     ImagesModule,
     AuthModule,
     RolesModule,
+    AttributesModule,
   ],
   controllers: [],
   providers: [],
