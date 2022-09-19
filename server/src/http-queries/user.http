@@ -49,3 +49,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlbmRlc
      "value": "USER",
      "userId" : 2
 }
+###
+//Add address
+PATCH  http://localhost:5000/user/address/2/2 HTTP/1.1
+content-type: application/json
+
+{
+}

@@ -11,6 +11,7 @@ import { UserAddresses } from 'src/user/entities/user-address.entity';
   providers: [AddressesService],
   imports: [
     SequelizeModule.forFeature([Address, User, UserAddresses])
-  ]
+  ],
+  exports: [AddressesService]
 })
 export class AddressesModule {}

@@ -10,6 +10,7 @@ import { RolesModule } from 'src/roles/roles.module';
 import { AuthModule } from 'src/auth/auth.module';
 import { Role } from 'src/roles/entities/role.entity';
 import { UserRoles } from 'src/roles/entities/user-roles.enitty';
+import { AddressesModule } from 'src/addresses/addresses.module';
 
 @Module({
   controllers: [UserController],
@@ -18,6 +19,7 @@ import { UserRoles } from 'src/roles/entities/user-roles.enitty';
     SequelizeModule.forFeature([User, Address, UserAddresses, Role, UserRoles]),
     FilesModule,
     RolesModule,
+    AddressesModule,
     forwardRef(() => AuthModule),
   ],
   exports:[

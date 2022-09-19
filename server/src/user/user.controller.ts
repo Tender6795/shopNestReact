@@ -67,4 +67,13 @@ export class UserController {
   addRole(@Body() dto: AddRoleDto) {
     return this.userService.addRole(dto) 
   }
+
+
+  //TODO use Token
+  @ApiOperation({ summary: 'Add address' })
+  @ApiResponse({ status: 200, type: User })
+  @Patch('/address/:userId/:addressId')
+  addAddress(@Param('userId') userId: string, @Param('addressId') addressId: string) {
+    return this.userService.addAddress(+userId , +addressId ) 
+  }
 }

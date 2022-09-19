@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import * as bcrypt from 'bcryptjs'
+import { AddressesService } from 'src/addresses/addresses.service';
 
 import { FilesService } from 'src/files/files.service';
 import { RolesService } from 'src/roles/roles.service';
@@ -11,16 +12,18 @@ import { User } from './entities/user.entity';
 
 @Injectable()
 export class UserService {
+
   constructor(@InjectModel(User) private userRepository: typeof User,
     private fileService: FilesService,
-    private roleService: RolesService
+    private roleService: RolesService,
+    private addressService: AddressesService
   ) { }
 
   async create(createUserDto: CreateUserDto, image?: any) {
     try {
       const fileName = await this.fileService.createFile(image)
       const hashPassword = await bcrypt.hash(createUserDto.password, 5)
-      const user = await this.userRepository.create({ ...createUserDto, password: hashPassword,avatar: fileName })
+      const user = await this.userRepository.create({ ...createUserDto, password: hashPassword, avatar: fileName })
       const role = await this.roleService.getRoleByValue("USER")
       await user.$set('roles', [role.id])
       user.roles = [role]
@@ -48,7 +51,7 @@ export class UserService {
   }
 
   async update(id: number, updateUserDto: UpdateUserDto, image: any) {
-    const user = await this.userRepository.findByPk(id)
+    const user = await this.userRepository.findByPk(id,{ include:{ all: true }})
     if (!user) throw new HttpException('User not found', HttpStatus.NOT_FOUND)
     const fileName = await this.fileService.createFile(image)
     const isModified = await user.update({ ...updateUserDto, avatar: fileName })
@@ -63,12 +66,22 @@ export class UserService {
   }
 
   async addRole(dto: AddRoleDto) {
-    const user = await this.userRepository.findByPk(dto.userId)
+    const user = await this.userRepository.findByPk(dto.userId,{ include:{ all: true }})
     const role = await this.roleService.getRoleByValue(dto.value)
     if (user && role) {
-      await user.$add('role', role.id)
-      return dto
+      await user.$add('roles', role.id)
+      return user
     }
     throw new HttpException('User or role not found', HttpStatus.NOT_FOUND)
+  }
+
+  async addAddress(userId: number, addressId: number) {
+    const user = await this.userRepository.findByPk(userId,{ include:{ all: true }})
+    const address = await this.addressService.findOne(addressId)
+    if(user && address){
+      await user.$add('addresses', address.id)
+      return user
+    }
+    throw new HttpException('User or address not found', HttpStatus.NOT_FOUND)
   }
 }
