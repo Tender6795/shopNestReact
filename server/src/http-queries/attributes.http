@@ -34,3 +34,12 @@ content-type: application/json
     "value": "pink"
 }
 ###
+
+PATCH   http://localhost:5000/attributes/addAttributeToProduct/2/2 HTTP/1.1
+content-type: application/json
+
+{
+
+}
+
+###

@@ -5,15 +5,17 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { Attribute } from './entities/attribute.entity';
 import { Product } from 'src/products/entities/product.entity';
 import { ProductAttributes } from './entities/product-attributes';
+import { ProductsController } from 'src/products/products.controller';
+import { ProductsService } from 'src/products/products.service';
+import { ProductsModule } from 'src/products/products.module';
 
 @Module({
-  controllers: [AttributesController],
-  providers: [AttributesService],
   imports: [
     SequelizeModule.forFeature([Attribute, Product, ProductAttributes]),
+    ProductsModule,
   ],
-  exports: [
-    AttributesService
-  ]
+  exports: [AttributesService],
+  controllers: [AttributesController],
+  providers: [AttributesService],
 })
-export class AttributesModule {}
+export class AttributesModule { }

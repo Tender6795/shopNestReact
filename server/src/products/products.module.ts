@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ProductsService } from './products.service';
 import { ProductsController } from './products.controller';
@@ -9,12 +9,14 @@ import { ImagesModule } from 'src/images/images.module';
 import { Attribute } from 'src/attributes/entities/attribute.entity';
 import { ProductAttributes } from 'src/attributes/entities/product-attributes';
 import { AttributesModule } from 'src/attributes/attributes.module';
+import { AttributesService } from 'src/attributes/attributes.service';
 
 @Module({
   imports: [
-    SequelizeModule.forFeature([Product , Image, Attribute, ProductAttributes]),
+    SequelizeModule.forFeature([Product, Image, Attribute, ProductAttributes]),
     ImagesModule,
   ],
+  exports:[ProductsService],
   controllers: [ProductsController],
   providers: [ProductsService],
 })

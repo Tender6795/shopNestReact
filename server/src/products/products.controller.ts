@@ -8,6 +8,7 @@ import { Product } from './entities/product.entity';
 import { diskStorage } from 'multer';
 import { FilesService } from 'src/files/files.service';
 import { editFileName, imageFileFilter } from 'src/utils/file-upload.utils';
+import { AttributesService } from 'src/attributes/attributes.service';
 
 @ApiTags('Products')
 @Controller('products')

@@ -7,11 +7,11 @@ import { Product } from './entities/product.entity';
 
 @Injectable()
 export class ProductsService {
-
+ 
   constructor(
     @InjectModel(Product)
     private productsRepositry: typeof Product,
-    private imageService: ImagesService
+    private imageService: ImagesService,
   ) { }
 
   async create(createProductDto: CreateProductDto, images?: any) {

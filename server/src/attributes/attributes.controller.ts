@@ -8,7 +8,7 @@ import { Attribute } from './entities/attribute.entity';
 @ApiTags('Attributes')
 @Controller('attributes')
 export class AttributesController {
-  constructor(private readonly attributesService: AttributesService) {}
+  constructor(private readonly attributesService: AttributesService) { }
 
   @ApiOperation({ summary: 'Create attribute' })
   @ApiResponse({ status: 200, type: Attribute })
@@ -26,23 +26,28 @@ export class AttributesController {
   }
 
   @ApiOperation({ summary: 'Get attribute by id' })
-  @ApiResponse({ status: 200, type: Attribute })  
+  @ApiResponse({ status: 200, type: Attribute })
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.attributesService.findOne(+id);
   }
 
   @ApiOperation({ summary: 'Update attribute by id' })
-  @ApiResponse({ status: 200, type: Attribute })  
+  @ApiResponse({ status: 200, type: Attribute })
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateAttributeDto: UpdateAttributeDto) {
     return this.attributesService.update(+id, updateAttributeDto);
   }
 
   @ApiOperation({ summary: 'Update attribute by id' })
-  @ApiResponse({ status: 200 })  
+  @ApiResponse({ status: 200 })
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.attributesService.remove(+id);
+  }
+  @ApiOperation({ summary: 'Add attribute to product' })
+  @Patch('/addAttributeToProduct/:attributeId/:productId')
+  addAttribute(@Param('attributeId') attributeId: string, @Param('productId') productId: string,) {
+    return this.attributesService.addAttributeToProduct(+attributeId, +productId)
   }
 }
