@@ -22,6 +22,7 @@ import { UserRoles } from './roles/entities/user-roles.enitty';
 import { AttributesModule } from './attributes/attributes.module';
 import { Attribute } from './attributes/entities/attribute.entity';
 import { ProductAttributes } from './attributes/entities/product-attributes';
+import { CommentsModule } from './comments/comments.module';
 
 @Module({
   imports: [
@@ -52,6 +53,7 @@ import { ProductAttributes } from './attributes/entities/product-attributes';
     AuthModule,
     RolesModule,
     AttributesModule,
+    CommentsModule,
   ],
   controllers: [],
   providers: [],
