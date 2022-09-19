@@ -1,4 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
 import { CreateAttributeDto } from './dto/create-attribute.dto';
 import { UpdateAttributeDto } from './dto/update-attribute.dto';
 import { Attribute } from './entities/attribute.entity';
@@ -6,6 +7,7 @@ import { Attribute } from './entities/attribute.entity';
 @Injectable()
 export class AttributesService {
   constructor(
+    @InjectModel(Attribute)
     private attributesRepositiry: typeof Attribute 
   ){}
 
