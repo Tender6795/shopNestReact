@@ -18,16 +18,22 @@ export class RatingsController {
     return this.ratingsService.create(createRatingDto, +req.user.id);
   }
 
+  @ApiOperation({ summary: 'Get all ratings' })
+  @ApiResponse({ status: 200, type: [Rating] })
   @Get()
   findAll() {
     return this.ratingsService.findAll();
   }
 
+  @ApiOperation({ summary: 'Get rating by id' })
+  @ApiResponse({ status: 200, type: [Rating] })
   @Get(':id')
   findById(@Param('id') id: string) {
     return this.ratingsService.findById(+id);
   }
 
+  @ApiOperation({ summary: 'Get average rating by product id' })
+  @ApiResponse({ status: 200, type: Number })
   @Get('/product/:id')
   findOne(@Param('id') id: string) {
     return this.ratingsService.getProductRaiting(+id);
