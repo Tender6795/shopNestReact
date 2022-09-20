@@ -1,27 +1,47 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { copyFile } from 'fs';
+import { ProductsService } from 'src/products/products.service';
 import { CreateRatingDto } from './dto/create-rating.dto';
 import { Rating } from './entities/rating.entity';
 
 @Injectable()
 export class RatingsService {
-constructor(
-  @InjectModel(Rating) private ratingRepository: typeof Rating
-){}
+  constructor(
+    @InjectModel(Rating) private ratingRepository: typeof Rating,
+    private productService: ProductsService
+  ) { }
 
-  create(createRatingDto: CreateRatingDto, userId: number) {
-    return 'This action adds a new rating';
+  async create(createRatingDto: CreateRatingDto, userId: number) {
+    const candidates = await this.ratingRepository.findAll({ where: { productId: +createRatingDto.productId, userId } })
+    if (candidates.length) {
+      throw new HttpException('Already rated', HttpStatus.NOT_ACCEPTABLE)
+    }
+    const product = await this.productService.findOne(+createRatingDto.productId)
+    if (product) {
+      return await this.ratingRepository.create({ ...createRatingDto, userId })
+    }
+    throw new HttpException('User or product not found', HttpStatus.NOT_FOUND)
   }
 
-  findAll() {
-    return `This action returns all ratings`;
+  async findAll() {
+    return await this.ratingRepository.findAll()
   }
 
-  findById(id: number) {
-    return `This action returns a #${id} rating`;
+  async findById(id: number) {
+    const rating = await this.ratingRepository.findByPk(id)
+    if (!rating) throw new HttpException('Comment not found', HttpStatus.NOT_FOUND)
+    return rating
   }
 
-  getProductRaiting(id: number) {
-    return `This action returns a #${id} rating`;
+  async getProductRaiting(id: number) {
+    const ratings: Rating[] = await this.ratingRepository.findAll({ where: { productId: id } })
+    if (!ratings.length) throw new HttpException('Rating not found', HttpStatus.NOT_FOUND)
+
+  const avgReting = ratings.reduce((acc,rating ) => {
+    return acc + +rating.value
+  },0) / ratings.length
+  
+    return avgReting
   }
 }
