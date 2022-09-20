@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Model, Table, Column, DataType, BelongsToMany, HasMany, ForeignKey, BelongsTo } from 'sequelize-typescript'
 import { Attribute } from 'src/attributes/entities/attribute.entity';
 import { ProductAttributes } from 'src/attributes/entities/product-attributes';
+import { Comment } from 'src/comments/entities/comment.entity';
 import { Image } from 'src/images/entities/image.entity';
 
 
@@ -30,6 +31,9 @@ export class Product extends Model< Product, ProductCreationAttr>{
 
     @HasMany(()=> Image)
     images: Image[]
+
+    @HasMany(()=> Comment)
+    comments: Comment[]
 
     @BelongsToMany(()=>Attribute, ()=> ProductAttributes)
     attributes: Attribute[];

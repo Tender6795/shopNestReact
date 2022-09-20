@@ -39,7 +39,7 @@ export class UserService {
   }
 
   async findOneById(id: number) {
-    const user = await this.userRepository.findByPk(id)
+    const user = await this.userRepository.findByPk(id, {include: { all: true }})
     if (!user) throw new HttpException('User not found', HttpStatus.NOT_FOUND)
     return user
   }

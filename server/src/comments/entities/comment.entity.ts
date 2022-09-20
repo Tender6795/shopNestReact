@@ -1,5 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Column, DataType, Model, Table } from "sequelize-typescript";
+import { Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript";
+import { Product } from "src/products/entities/product.entity";
+import { User } from "src/user/entities/user.entity";
 
 
 interface CommentCreateAttr {
@@ -19,10 +21,12 @@ export class Comment extends Model<Comment, CommentCreateAttr> {
     message: string;
 
     @ApiProperty({ example: '1', description: 'Product id' })
+    @ForeignKey(()=> Product)
     @Column({ type: DataType.INTEGER, allowNull: false })
     productId: number;
 
     @ApiProperty({ example: '1', description: 'User id' })
+    @ForeignKey(()=> User)
     @Column({ type: DataType.INTEGER, allowNull: false })
     userId: number;
 }

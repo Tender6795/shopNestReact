@@ -45,6 +45,7 @@ export class AttributesController {
   remove(@Param('id') id: string) {
     return this.attributesService.remove(+id);
   }
+  
   @ApiOperation({ summary: 'Add attribute to product' })
   @Patch('/addAttributeToProduct/:attributeId/:productId')
   addAttribute(@Param('attributeId') attributeId: string, @Param('productId') productId: string,) {
