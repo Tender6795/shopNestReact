@@ -1,6 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { copyFile } from 'fs';
 import { ProductsService } from 'src/products/products.service';
 import { CreateRatingDto } from './dto/create-rating.dto';
 import { Rating } from './entities/rating.entity';
