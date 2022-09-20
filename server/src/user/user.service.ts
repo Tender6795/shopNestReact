@@ -75,7 +75,7 @@ export class UserService {
     throw new HttpException('User or role not found', HttpStatus.NOT_FOUND)
   }
 
-  async addAddress(userId: number, addressId: number) {
+  async addAddress( addressId: number, userId: number) {
     const user = await this.userRepository.findByPk(userId,{ include:{ all: true }})
     const address = await this.addressService.findOne(addressId)
     if(user && address){

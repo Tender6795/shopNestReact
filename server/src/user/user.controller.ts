@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, UseGuards, Request } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -8,6 +8,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { AddRoleDto } from './dto/add-role.dto';
 import { Roles } from 'src/auth/roles-auth.decorator';
 import { RolesGuard } from 'src/auth/roles.guard';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @ApiTags('Users')
 @Controller('user')
@@ -69,11 +70,11 @@ export class UserController {
   }
 
 
-  //TODO use Token
   @ApiOperation({ summary: 'Add address' })
   @ApiResponse({ status: 200, type: User })
-  @Patch('/address/:userId/:addressId')
-  addAddress(@Param('userId') userId: string, @Param('addressId') addressId: string) {
-    return this.userService.addAddress(+userId , +addressId ) 
+  @UseGuards(JwtAuthGuard)
+  @Patch('/address/:addressId')
+  addAddress(@Param('addressId') addressId: string, @Request() req) {
+    return this.userService.addAddress(+addressId , +req.user.id) 
   }
 }
