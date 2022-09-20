@@ -24,6 +24,8 @@ import { Attribute } from './attributes/entities/attribute.entity';
 import { ProductAttributes } from './attributes/entities/product-attributes';
 import { CommentsModule } from './comments/comments.module';
 import { Comment } from './comments/entities/comment.entity';
+import { RatingsModule } from './ratings/ratings.module';
+import { Rating } from './ratings/entities/rating.entity';
 
 @Module({
   imports: [
@@ -40,7 +42,19 @@ import { Comment } from './comments/entities/comment.entity';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      models: [User, Address, UserAddresses, Product, Image, Role, UserRoles, Attribute, ProductAttributes, Comment],
+      models: [
+        User,
+        Address,
+        UserAddresses, 
+        Product, 
+        Image, 
+        Role, 
+        UserRoles, 
+        Attribute, 
+        ProductAttributes, 
+        Comment, 
+        Rating,
+      ],
       autoLoadModels: true
     }),
     MulterModule.register({
@@ -55,6 +69,7 @@ import { Comment } from './comments/entities/comment.entity';
     RolesModule,
     AttributesModule,
     CommentsModule,
+    RatingsModule,
   ],
   controllers: [],
   providers: [],
