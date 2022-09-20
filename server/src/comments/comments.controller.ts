@@ -1,5 +1,6 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { CommentsService } from './comments.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
@@ -13,9 +14,10 @@ export class CommentsController {
 
   @ApiOperation({ summary: 'Create comment' })
   @ApiResponse({ status: 200, type: Comment })
+  @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() createCommentDto: CreateCommentDto) {
-    return this.commentsService.create(createCommentDto);
+  create(@Body() createCommentDto: CreateCommentDto,  @Request() req) {
+    return this.commentsService.create(createCommentDto,  +req.user.id);
   }
 
   @ApiOperation({ summary: 'Get all comments' })

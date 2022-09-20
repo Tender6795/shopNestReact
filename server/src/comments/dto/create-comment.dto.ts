@@ -10,8 +10,4 @@ export class CreateCommentDto {
     @ApiProperty({ example: '42', description: 'product id' })
     @IsNumber({}, { message: 'must be number' })
     readonly productId: number;
-
-    @ApiProperty({ example: '42', description: 'user id' })
-    @IsNumber({}, { message: 'must be number' })
-    readonly userId: number;
 }

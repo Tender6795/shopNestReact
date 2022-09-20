@@ -1,7 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { ProductsService } from 'src/products/products.service';
-import { UserService } from 'src/user/user.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { Comment } from './entities/comment.entity';
@@ -10,15 +9,13 @@ import { Comment } from './entities/comment.entity';
 export class CommentsService {
   constructor(
     @InjectModel(Comment) private commentRepository: typeof Comment,
-    private userService: UserService,
     private productService: ProductsService
   ) { }
 
-  async create(createCommentDto: CreateCommentDto) {
-    const user = await this.userService.findOneById(createCommentDto.userId)
-    const product = await this.productService.findOne(createCommentDto.productId)
-    if(user && product){
-      return await this.commentRepository.create(createCommentDto)
+  async create(createCommentDto: CreateCommentDto, userId: number) {
+    const product = await this.productService.findOne(+createCommentDto.productId)
+    if( product){
+      return await this.commentRepository.create({...createCommentDto, userId})
     }
     throw new HttpException('User or product not found', HttpStatus.NOT_FOUND)
   }
