@@ -1,31 +1,25 @@
 import { Button, Card, Modal, TextField, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { isEmail } from '../utils'
 
-export const RegistrationOrLoginModal = ({
-  open,
-  handleClose,
-  isLogin  ,
-}) => {
+export const RegistrationOrLoginModal = ({ open, handleClose, isLogin }) => {
   const [formData, setFormData] = useState({ email: null, password: null })
   const [isValid, setIsValid] = useState(false)
   const { email, password } = formData
+
   const handleChangeInput = e => {
     const { name, value } = e.target
     setFormData({ ...formData, [name]: value })
-    isValidForm()
   }
 
-  const handleOk = () => {
-    if (!email || !password) {
-      return
-    }
-  }
+  const handleOkButton = () => {}
 
   const isValidForm = () => {
     setIsValid(isEmail(email) && password)
   }
+
+  useEffect(() => isValidForm(), [email, password])
 
   return (
     <Modal
@@ -34,9 +28,10 @@ export const RegistrationOrLoginModal = ({
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-
       <StyledCard>
-      <Typography variant="h4" component='h4'>{ isLogin ? 'Login' : 'Registration'}</Typography>
+        <Typography variant="h4" component="h4">
+          {isLogin ? 'Login' : 'Registration'}
+        </Typography>
         <StyledInput
           required
           name="email"
@@ -65,7 +60,7 @@ export const RegistrationOrLoginModal = ({
           <ButtonWithLeftMargin
             color="secondary"
             variant="contained"
-            onClick={handleOk}
+            onClick={handleOkButton}
             autoFocus
             disabled={!isValid}
           >
