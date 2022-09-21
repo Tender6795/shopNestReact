@@ -1,19 +1,29 @@
 import { Button, Card, Modal, TextField, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { isEmail } from '../utils'
+import { registration, login } from '../store/reducers/userReducer';
+
 
 export const RegistrationOrLoginModal = ({ open, handleClose, isLogin }) => {
   const [formData, setFormData] = useState({ email: null, password: null })
   const [isValid, setIsValid] = useState(false)
   const { email, password } = formData
+  const dispatch = useDispatch()
 
   const handleChangeInput = e => {
     const { name, value } = e.target
     setFormData({ ...formData, [name]: value })
   }
 
-  const handleOkButton = () => {}
+  const handleOkButton = () => {
+    if(isLogin){
+
+    }else{
+      dispatch(registration({...formData}))
+    }
+  }
 
   const isValidForm = () => {
     setIsValid(isEmail(email) && password)
