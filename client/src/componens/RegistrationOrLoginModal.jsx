@@ -19,7 +19,7 @@ export const RegistrationOrLoginModal = ({ open, handleClose, isLogin }) => {
 
   const handleOkButton = () => {
     if(isLogin){
-
+      dispatch(login({...formData}))
     }else{
       dispatch(registration({...formData}))
     }
