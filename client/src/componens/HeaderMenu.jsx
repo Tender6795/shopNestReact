@@ -12,20 +12,24 @@ import { useDispatch, useSelector } from 'react-redux'
 import { logout } from '../store/reducers/userReducer'
 import { userDataSelector } from '../store/selectors'
 import { AuthModal } from './AuthModal'
+import ProfileSettingsModal from './ProfileSettingsModal'
 
 export default function HeaderMenu() {
   const userSelector = useSelector(userDataSelector)
   const [anchorElUser, setAnchorElUser] = useState(null)
   const [openRegistrationModal, setOpenRegistrationModal] = useState(false)
   const [openLoginModal, setOpenLoginModal] = useState(false)
+  const [openProfileSettingsModal, setOpenProfileSettingsModal] =
+    useState(false)
+
   const dispatch = useDispatch()
 
   const settings = !!userSelector.token
     ? [
         {
-          name: 'Profile',
+          name: 'Profile Settings',
           handle: () => {
-            alert('Profile')
+            setOpenProfileSettingsModal(true)
           },
         },
         {
@@ -50,6 +54,7 @@ export default function HeaderMenu() {
           },
         },
       ]
+
   const handleOpenUserMenu = event => {
     setAnchorElUser(event.currentTarget)
   }
@@ -59,17 +64,28 @@ export default function HeaderMenu() {
   }
   return (
     <>
-      {openRegistrationModal && <AuthModal
-        open={openRegistrationModal}
-        handleClose={() => setOpenRegistrationModal(false)}
-        isLogin={false}
-      />}
+      {openRegistrationModal && (
+        <AuthModal
+          open={openRegistrationModal}
+          handleClose={() => setOpenRegistrationModal(false)}
+          isLogin={false}
+        />
+      )}
 
-      {openLoginModal &&<AuthModal
-        open={openLoginModal}
-        handleClose={() => setOpenLoginModal(false)}
-        isLogin={true}
-      />}
+      {openLoginModal && (
+        <AuthModal
+          open={openLoginModal}
+          handleClose={() => setOpenLoginModal(false)}
+          isLogin={true}
+        />
+      )}
+
+      {openProfileSettingsModal && (
+        <ProfileSettingsModal
+          open={openProfileSettingsModal}
+          handleClose={() => setOpenProfileSettingsModal(false)}
+        />
+      )}
 
       <Box sx={{ flexGrow: 0 }}>
         <Tooltip title="Open settings">
