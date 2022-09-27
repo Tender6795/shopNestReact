@@ -14,7 +14,7 @@ export const registration = createAsyncThunk(
 export const userSlice = createSlice({
   name: 'user',
   initialState: {
-    token: null,
+    token: localStorage.getItem('token'),
   },
   reducers: {
     logout: state => {
