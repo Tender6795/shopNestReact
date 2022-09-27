@@ -3,10 +3,9 @@ import { styled } from '@mui/material/styles'
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { isEmail } from '../utils'
-import { registration, login } from '../store/reducers/userReducer';
+import { registration, login } from '../store/reducers/userReducer'
 
-
-export const RegistrationOrLoginModal = ({ open, handleClose, isLogin }) => {
+export const AuthModal = ({ open, handleClose, isLogin }) => {
   const [formData, setFormData] = useState({ email: null, password: null })
   const [isValid, setIsValid] = useState(false)
   const { email, password } = formData
@@ -18,11 +17,12 @@ export const RegistrationOrLoginModal = ({ open, handleClose, isLogin }) => {
   }
 
   const handleOkButton = () => {
-    if(isLogin){
-      dispatch(login({...formData}))
-    }else{
-      dispatch(registration({...formData}))
+    if (isLogin) {
+      dispatch(login({ ...formData }))
+    } else {
+      dispatch(registration({ ...formData }))
     }
+    handleClose()
   }
 
   const isValidForm = () => {

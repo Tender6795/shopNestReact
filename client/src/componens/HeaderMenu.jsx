@@ -8,15 +8,19 @@ import {
   Typography,
 } from '@mui/material'
 import { useState } from 'react'
-import { RegistrationOrLoginModal } from './RegistrationOrLoginModal'
+import { useDispatch, useSelector } from 'react-redux'
+import { logout } from '../store/reducers/userReducer'
+import { userDataSelector } from '../store/selectors'
+import { AuthModal } from './AuthModal'
 
 export default function HeaderMenu() {
-  const [isAuth, setIsAuth] = useState(false)
+  const userSelector = useSelector(userDataSelector)
   const [anchorElUser, setAnchorElUser] = useState(null)
   const [openRegistrationModal, setOpenRegistrationModal] = useState(false)
   const [openLoginModal, setOpenLoginModal] = useState(false)
+  const dispatch = useDispatch()
 
-  const settings = isAuth
+  const settings = !!userSelector.token
     ? [
         {
           name: 'Profile',
@@ -27,7 +31,8 @@ export default function HeaderMenu() {
         {
           name: 'Logout',
           handle: () => {
-            alert('Logout')
+            localStorage.removeItem('token')
+            dispatch(logout())
           },
         },
       ]
@@ -54,13 +59,13 @@ export default function HeaderMenu() {
   }
   return (
     <>
-      {openRegistrationModal && <RegistrationOrLoginModal
+      {openRegistrationModal && <AuthModal
         open={openRegistrationModal}
         handleClose={() => setOpenRegistrationModal(false)}
         isLogin={false}
       />}
 
-      {openLoginModal &&<RegistrationOrLoginModal
+      {openLoginModal &&<AuthModal
         open={openLoginModal}
         handleClose={() => setOpenLoginModal(false)}
         isLogin={true}
