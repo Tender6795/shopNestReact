@@ -9,7 +9,7 @@ export const isEmail = (string = '') => {
 
 export const getUserFromToken = (token) => {
     if(token){
-        jwt_decode(token)
+       return jwt_decode(token)
     }
     return ''
 }
