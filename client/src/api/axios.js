@@ -29,7 +29,7 @@ const _patch = (...rest) => api(axios.patch, rest);
 
 const _delete = (...rest) => api(axios.delete, rest);
 
-const baseURL = process.env.REACT_APP_API_SRC || 'http://localhost:5000';
+export const baseURL = process.env.REACT_APP_API_SRC || 'http://localhost:5000';
 const setCustomHeader = (headers) => {
   let custom_headers = { ...headers };
 

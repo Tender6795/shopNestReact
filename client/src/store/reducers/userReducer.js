@@ -12,9 +12,15 @@ export const registration = createAsyncThunk(
   async registrationData => await api.registration(registrationData)
 )
 
+export const updateUser = createAsyncThunk('user/updateUser', async (userDataForUpdate) =>
+  api.updateUser(userDataForUpdate),
+);
+
+export const getUserByEmail = createAsyncThunk('user/getUserByEmail', async (email) =>
+  api.getUserByEmail(email),
+);
 
 const tokenFromLocalStorage = localStorage.getItem('token') 
-
 
 export const userSlice = createSlice({
   name: 'user',
@@ -45,6 +51,16 @@ export const userSlice = createSlice({
         state.token = payload.token
         state.user = getUserFromToken(payload.token) 
         state.isUserCreateSuccessful = true
+      },
+    }),
+    ...asyncActionsCreator(updateUser, 'updateUser', {
+      fulfilled: (state, { payload }) => {
+          state.user = payload;
+      },
+    }),
+    ...asyncActionsCreator(getUserByEmail, 'getUserByEmail', {
+      fulfilled: (state, { payload }) => {
+          state.user = payload;
       },
     }),
   },

@@ -4,20 +4,29 @@ import { styled } from '@mui/material/styles'
 import { useDispatch, useSelector } from 'react-redux'
 import { userDataSelector } from '../store/selectors'
 import AddAPhotoTwoToneIcon from '@mui/icons-material/AddAPhotoTwoTone'
+import { updateUser } from '../store/reducers/userReducer'
+import { baseURL } from '../api/axios'
 
 export default function ProfileSettingsModal({ open, handleClose }) {
-  const userSelector = useSelector(userDataSelector)
-  const [user, setUser] = useState(userSelector)
+  const { user } = useSelector(userDataSelector)
+  const [userState, setUserState] = useState(user)
   const imgInput = useRef()
-  const [picture, setPicture] = useState(
-    'https://png.pngtree.com/png-clipart/20210129/ourlarge/pngtree-default-male-avatar-png-image_2811083.jpg'
-  )
 
-  const { firstName, lastName, patronymic } = user
+  const { firstName, lastName, patronymic, id, avatar } = userState
+
+  let defaultAvatar =
+    'https://png.pngtree.com/png-clipart/20210129/ourlarge/pngtree-default-male-avatar-png-image_2811083.jpg'
+
+  if (avatar) {
+    defaultAvatar = `${baseURL}/uploads/${avatar}`
+  }
+  const [picture, setPicture] = useState(defaultAvatar)
+
+  const dispatch = useDispatch()
 
   const handleChangeInput = e => {
     const { name, value } = e.target
-    setUser({ ...user, [name]: value })
+    setUserState({ ...userState, [name]: value })
   }
 
   const handleClick = () => {
@@ -25,14 +34,21 @@ export default function ProfileSettingsModal({ open, handleClose }) {
   }
 
   const handleUpload = e => {
-    const { files } = e.target;
-    const file = files[0];
-    setPicture(URL.createObjectURL(file));
+    const { files } = e.target
+    const file = files[0]
+    setPicture(URL.createObjectURL(file))
+    setUserState({ ...userState, avatar: file })
   }
 
+  const handleOkButton = () => {
+    const formData = new FormData()
+    for (const [key, value] of Object.entries(userState)) {
+      formData.append(key, value)
+    }
+    formData.append('image', userState.avatar)
 
-  const handleOkButton = ()=>{
-
+    dispatch(updateUser({ id, data: formData }))
+    handleClose()
   }
 
   return (
@@ -144,7 +160,7 @@ const HiddenInput = styled('input')(() => ({
 const StyledImageContainer = styled('div')(() => ({
   backgroundColor: 'rgba(0, 0, 0, 0.38);',
   height: '400px',
-  borderRadius:  '100%',
+  borderRadius: '100%',
   marginBottom: '16px',
   width: '400px',
   boxShadow: '0px 7px 42px rgba(56, 0, 138, 0.04)',
