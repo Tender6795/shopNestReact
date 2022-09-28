@@ -9,6 +9,7 @@ import {
 } from '@mui/material'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { baseURL } from '../api/axios'
 import { logout } from '../store/reducers/userReducer'
 import { userDataSelector } from '../store/selectors'
 import { AuthModal } from './AuthModal'
@@ -62,6 +63,11 @@ export default function HeaderMenu() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null)
   }
+
+  let avatarSrc = '/static/images/avatar/2.jpg'
+  if (userSelector?.user?.avatar) {
+    avatarSrc = `${baseURL}/uploads/${userSelector.user.avatar}`
+  }
   return (
     <>
       {openRegistrationModal && (
@@ -90,7 +96,9 @@ export default function HeaderMenu() {
       <Box sx={{ flexGrow: 0 }}>
         <Tooltip title="Open settings">
           <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-            <Avatar src="/static/images/avatar/2.jpg" />
+            <Avatar
+              src={avatarSrc}
+            />
           </IconButton>
         </Tooltip>
         <Menu
