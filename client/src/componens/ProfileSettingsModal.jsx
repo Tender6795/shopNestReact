@@ -9,7 +9,9 @@ export default function ProfileSettingsModal({ open, handleClose }) {
   const userSelector = useSelector(userDataSelector)
   const [user, setUser] = useState(userSelector)
   const imgInput = useRef()
-  const [picture, setPicture] = useState('')
+  const [picture, setPicture] = useState(
+    'https://png.pngtree.com/png-clipart/20210129/ourlarge/pngtree-default-male-avatar-png-image_2811083.jpg'
+  )
 
   const { firstName, lastName, patronymic } = user
 
@@ -20,11 +22,17 @@ export default function ProfileSettingsModal({ open, handleClose }) {
 
   const handleClick = () => {
     imgInput.current.click()
-    alert('click1')
   }
 
   const handleUpload = e => {
-    alert('click2')
+    const { files } = e.target;
+    const file = files[0];
+    setPicture(URL.createObjectURL(file));
+  }
+
+
+  const handleOkButton = ()=>{
+
   }
 
   return (
@@ -92,9 +100,8 @@ export default function ProfileSettingsModal({ open, handleClose }) {
           <ButtonWithLeftMargin
             color="secondary"
             variant="contained"
-            // onClick={handleOkButton}
+            onClick={handleOkButton}
             autoFocus
-            // disabled={!isValid}
           >
             Ok
           </ButtonWithLeftMargin>
@@ -136,10 +143,10 @@ const HiddenInput = styled('input')(() => ({
 
 const StyledImageContainer = styled('div')(() => ({
   backgroundColor: 'rgba(0, 0, 0, 0.38);',
-  height: '200px',
-  borderRadius: '16px',
+  height: '400px',
+  borderRadius:  '100%',
   marginBottom: '16px',
-  width: 'auto',
+  width: '400px',
   boxShadow: '0px 7px 42px rgba(56, 0, 138, 0.04)',
 }))
 
@@ -147,7 +154,7 @@ const HiddenContainer = styled('div')(() => ({
   opacity: 0,
   width: '100%',
   height: '100%',
-  borderRadius: '16px',
+  borderRadius: '100%',
   '&:hover': {
     display: 'flex',
     flexDirection: 'column',
