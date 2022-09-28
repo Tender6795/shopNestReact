@@ -41,12 +41,14 @@ export default function ProfileSettingsModal({ open, handleClose }) {
   }
 
   const handleOkButton = () => {
+    const dataToSend = { ...userState }
     const formData = new FormData()
-    for (const [key, value] of Object.entries(userState)) {
+    formData.append('image', dataToSend.avatar)
+    delete dataToSend.avatar
+    delete dataToSend.password
+    for (const [key, value] of Object.entries(dataToSend)) {
       formData.append(key, value)
     }
-    formData.append('image', userState.avatar)
-
     dispatch(updateUser({ id, data: formData }))
     handleClose()
   }
