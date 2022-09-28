@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { asyncActionsCreator } from '../../store/reducers/reducerHelper'
 import * as api from '../../api'
+import { getUserFromToken } from '../../utils'
 
 export const login = createAsyncThunk(
   'user/login',
@@ -11,10 +12,15 @@ export const registration = createAsyncThunk(
   async registrationData => await api.registration(registrationData)
 )
 
+
+const tokenFromLocalStorage = localStorage.getItem('token') 
+
+
 export const userSlice = createSlice({
   name: 'user',
   initialState: {
-    token: localStorage.getItem('token'),
+    token: tokenFromLocalStorage,
+    user: getUserFromToken(tokenFromLocalStorage) 
   },
   reducers: {
     logout: state => {
@@ -28,7 +34,7 @@ export const userSlice = createSlice({
       {
         fulfilled: (state, { payload }) => {
           state.isLoginLoading = false
-          state.user = payload.user
+          state.user = getUserFromToken(payload.token) 
           state.token = payload.token
         },
       },
@@ -37,7 +43,7 @@ export const userSlice = createSlice({
     ...asyncActionsCreator(registration, 'registration', {
       fulfilled: (state, { payload }) => {
         state.token = payload.token
-        state.user = payload.user
+        state.user = getUserFromToken(payload.token) 
         state.isUserCreateSuccessful = true
       },
     }),
