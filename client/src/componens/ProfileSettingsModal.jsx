@@ -1,18 +1,22 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { Button, Card, Modal, TextField, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { useDispatch, useSelector } from 'react-redux'
-import { userDataSelector } from '../store/selectors'
 import AddAPhotoTwoToneIcon from '@mui/icons-material/AddAPhotoTwoTone'
+import * as uuid from 'uuid'
+
+import { userDataSelector } from '../store/selectors'
 import { updateUser } from '../store/reducers/userReducer'
 import { baseURL } from '../api/axios'
+import AddressEdit from './AddressEdit'
 
 export default function ProfileSettingsModal({ open, handleClose }) {
   const { user } = useSelector(userDataSelector)
   const [userState, setUserState] = useState(user)
+
   const imgInput = useRef()
 
-  const { firstName, lastName, patronymic, id, avatar } = userState
+  const { firstName, lastName, patronymic, id, avatar, addresses } = userState
 
   let defaultAvatar =
     'https://png.pngtree.com/png-clipart/20210129/ourlarge/pngtree-default-male-avatar-png-image_2811083.jpg'
@@ -53,6 +57,18 @@ export default function ProfileSettingsModal({ open, handleClose }) {
     handleClose()
   }
 
+  const handleAddAddress = () => {
+    const newAddress = {
+      country: 'Ukraine',
+      street: '',
+      houseNumber: '',
+      roomNumber: '',
+      postalCode: '',
+      id: uuid.v4(),
+    }
+    setUserState({ ...userState, addresses: [...addresses, newAddress] })
+  }
+
   return (
     <Modal
       open={open}
@@ -64,53 +80,59 @@ export default function ProfileSettingsModal({ open, handleClose }) {
         <Typography variant="h4" component="h4">
           Profile Settings
         </Typography>
+        <StyledFlexContainer>
+          <StyledImageContainer
+            onClick={handleClick}
+            aria-hidden="true"
+            style={{
+              background: `url(${picture}) center center/cover no-repeat`,
+            }}
+          >
+            <HiddenContainer>
+              <AddAPhotoTwoToneIcon fontSize="small" />
+              <Typography variant="h6">Upload Photo</Typography>
+            </HiddenContainer>
+          </StyledImageContainer>
+          <HiddenInput
+            type="file"
+            accept="image/x-png,image/jpeg,image/gif"
+            ref={imgInput}
+            onChange={handleUpload}
+          />
 
-        <StyledInput
-          name="firstName"
-          key="firstName"
-          label={'first name'}
-          fullWidth
-          value={firstName || ''}
-          onChange={handleChangeInput}
-        />
+          <StyledInputContainer>
+            <StyledInput
+              name="firstName"
+              key="firstName"
+              label={'first name'}
+              fullWidth
+              value={firstName || ''}
+              onChange={handleChangeInput}
+            />
 
-        <StyledInput
-          name="lastName"
-          key="lastName"
-          label={'last name'}
-          fullWidth
-          value={lastName || ''}
-          onChange={handleChangeInput}
-        />
+            <StyledInput
+              name="lastName"
+              key="lastName"
+              label={'last name'}
+              fullWidth
+              value={lastName || ''}
+              onChange={handleChangeInput}
+            />
 
-        <StyledInput
-          name="patronymic"
-          key="patronymic"
-          label={'patronymic'}
-          fullWidth
-          value={patronymic || ''}
-          onChange={handleChangeInput}
-        />
-
-        <StyledImageContainer
-          onClick={handleClick}
-          aria-hidden="true"
-          style={{
-            background: `url(${picture}) center center/cover no-repeat`,
-          }}
-        >
-          <HiddenContainer>
-            <AddAPhotoTwoToneIcon fontSize="small" />
-            <Typography variant="h6">Upload Photo</Typography>
-          </HiddenContainer>
-        </StyledImageContainer>
-        <HiddenInput
-          type="file"
-          accept="image/x-png,image/jpeg,image/gif"
-          ref={imgInput}
-          onChange={handleUpload}
-        />
-
+            <StyledInput
+              name="patronymic"
+              key="patronymic"
+              label={'patronymic'}
+              fullWidth
+              value={patronymic || ''}
+              onChange={handleChangeInput}
+            />
+          </StyledInputContainer>
+        </StyledFlexContainer>
+        <Button onClick={handleAddAddress}>Add Address</Button>
+        {addresses.map((address, index) => (
+          <AddressEdit key={index} address={address} />
+        ))}
         <StyledContainerLeft>
           <Button color="secondary" variant="outlined" onClick={handleClose}>
             Cansel
@@ -134,10 +156,21 @@ const StyledCard = styled(Card)(() => ({
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
+  width: 600,
   bgcolor: 'background.paper',
   boxShadow: 24,
   padding: '20px',
+}))
+
+const StyledFlexContainer = styled('div')(() => ({
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'space-around',
+}))
+
+const StyledInputContainer = styled('div')(() => ({
+  display: 'flex',
+  flexDirection: 'column',
 }))
 
 const StyledContainerLeft = styled('div')(() => ({
@@ -161,10 +194,10 @@ const HiddenInput = styled('input')(() => ({
 
 const StyledImageContainer = styled('div')(() => ({
   backgroundColor: 'rgba(0, 0, 0, 0.38);',
-  height: '400px',
+  height: '200px',
   borderRadius: '100%',
   marginBottom: '16px',
-  width: '400px',
+  width: '200px',
   boxShadow: '0px 7px 42px rgba(56, 0, 138, 0.04)',
 }))
 
