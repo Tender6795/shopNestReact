@@ -3,7 +3,6 @@ import { Button, Card, Modal, TextField, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { useDispatch, useSelector } from 'react-redux'
 import AddAPhotoTwoToneIcon from '@mui/icons-material/AddAPhotoTwoTone'
-import * as uuid from 'uuid'
 
 import { userDataSelector } from '../store/selectors'
 import { updateUser } from '../store/reducers/userReducer'
@@ -13,6 +12,7 @@ import AddressEdit from './AddressEdit'
 export default function ProfileSettingsModal({ open, handleClose }) {
   const { user } = useSelector(userDataSelector)
   const [userState, setUserState] = useState(user)
+  const [isAddressEditOpen, setIsAddressEditOpen] = useState(false)
 
   const imgInput = useRef()
 
@@ -55,18 +55,6 @@ export default function ProfileSettingsModal({ open, handleClose }) {
     }
     dispatch(updateUser({ id, data: formData }))
     handleClose()
-  }
-
-  const handleAddAddress = () => {
-    const newAddress = {
-      country: 'Ukraine',
-      street: '',
-      houseNumber: '',
-      roomNumber: '',
-      postalCode: '',
-      id: uuid.v4(),
-    }
-    setUserState({ ...userState, addresses: [...addresses, newAddress] })
   }
 
   return (
@@ -129,10 +117,13 @@ export default function ProfileSettingsModal({ open, handleClose }) {
             />
           </StyledInputContainer>
         </StyledFlexContainer>
-        <Button onClick={handleAddAddress}>Add Address</Button>
-        {addresses.map((address, index) => (
-          <AddressEdit key={index} address={address} />
-        ))}
+        {isAddressEditOpen ? (
+          <AddressEdit cancelHandle={() => setIsAddressEditOpen(false)} />
+        ) : (
+          <Button onClick={() => setIsAddressEditOpen(true)}>
+            Add Address
+          </Button>
+        )}
         <StyledContainerLeft>
           <Button color="secondary" variant="outlined" onClick={handleClose}>
             Cansel

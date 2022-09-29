@@ -1,11 +1,29 @@
-import { TextField, Box } from '@mui/material'
+import { useState } from 'react'
+import { TextField, Button } from '@mui/material'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import CancelIcon from '@mui/icons-material/Cancel'
 import { styled } from '@mui/material/styles'
+import * as uuid from 'uuid'
 
-export default function AddressEdit({ address }) {
+export default function AddressEdit({ address, cancelHandle }) {
+  
+  const initAddress = {
+    country: 'Ukraine',
+    street: '',
+    houseNumber: '',
+    roomNumber: '',
+    postalCode: '',
+    id: uuid.v4(),
+  }
+  
+  const [addressState, setAddressState] = useState(
+    address || initAddress
+  )
+
   const handleChangeInput = e => {
     const { name, value } = e.target
   }
-  const { country, street, houseNumber, roomNumber, postalCode, id } = address
+  const { country, street, houseNumber, roomNumber, postalCode, id } = addressState
   return (
     <StyledContainer>
       <StyledInput
@@ -45,6 +63,15 @@ export default function AddressEdit({ address }) {
         value={postalCode || ''}
         onChange={handleChangeInput}
       />
+      <StyledButtonContainer>
+        <Button color="success">
+          <CheckCircleIcon fontSize="large" />
+        </Button>
+
+        <Button color="error" onClick={cancelHandle}>
+          <CancelIcon fontSize="large" />
+        </Button>
+      </StyledButtonContainer>
     </StyledContainer>
   )
 }
@@ -52,6 +79,13 @@ export default function AddressEdit({ address }) {
 const StyledInput = styled(TextField)(() => ({
   margin: '10px 0',
   width: '40%',
+}))
+
+const StyledButtonContainer = styled('div')(() => ({
+  margin: '10px 0',
+  width: '40%',
+  display: 'flex',
+  justifyContent: 'flex-start',
 }))
 
 const StyledContainer = styled('div')(() => ({
