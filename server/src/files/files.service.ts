@@ -21,4 +21,13 @@ export class FilesService {
             throw new HttpException('Error when file writing', HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
+
+    async deleteFile(fileName) {
+        try {
+            const filePath = path.resolve(__dirname, "..", 'static/uploads')
+            await fs.unlinkSync(`${filePath}/${fileName}`)
+        } catch (error) {
+            throw new HttpException('Error when file deleting', HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+    }
 }

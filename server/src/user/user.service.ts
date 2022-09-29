@@ -53,6 +53,9 @@ export class UserService {
     const user = await this.userRepository.findByPk(id,{ include:{ all: true }})
     if (!user) throw new HttpException('User not found', HttpStatus.NOT_FOUND)
     const fileName = await this.fileService.createFile(image)
+    if(fileName){
+      await this.fileService.deleteFile(user.avatar)
+    }
     const isModified = await user.update({ ...updateUserDto, avatar: fileName })
     if (!isModified) throw new HttpException('User not modified', HttpStatus.NOT_MODIFIED)
     return user
