@@ -5,7 +5,7 @@ import CancelIcon from '@mui/icons-material/Cancel'
 import { styled } from '@mui/material/styles'
 import * as uuid from 'uuid'
 
-export default function AddressEdit({ address, cancelHandle }) {
+export default function AddressEdit({ address, cancelHandle, addAddress }) {
   
   const initAddress = {
     country: 'Ukraine',
@@ -22,6 +22,13 @@ export default function AddressEdit({ address, cancelHandle }) {
 
   const handleChangeInput = e => {
     const { name, value } = e.target
+    setAddressState({...addressState, [name]: value })
+  }
+
+
+  const saveHandle = ()=>{
+    addAddress(addressState)
+    cancelHandle()
   }
   const { country, street, houseNumber, roomNumber, postalCode, id } = addressState
   return (
@@ -64,7 +71,7 @@ export default function AddressEdit({ address, cancelHandle }) {
         onChange={handleChangeInput}
       />
       <StyledButtonContainer>
-        <Button color="success">
+        <Button color="success" onClick={saveHandle}>
           <CheckCircleIcon fontSize="large" />
         </Button>
 

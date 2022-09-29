@@ -8,6 +8,7 @@ import { userDataSelector } from '../store/selectors'
 import { updateUser } from '../store/reducers/userReducer'
 import { baseURL } from '../api/axios'
 import AddressEdit from './AddressEdit'
+import AddressInfo from './AddressInfo'
 
 export default function ProfileSettingsModal({ open, handleClose }) {
   const { user } = useSelector(userDataSelector)
@@ -55,6 +56,15 @@ export default function ProfileSettingsModal({ open, handleClose }) {
     }
     dispatch(updateUser({ id, data: formData }))
     handleClose()
+  }
+
+  const addAddress = address => {
+    setUserState({ ...userState, addresses: [...addresses, address] })
+  }
+
+  const deleteAddressHandle = addressId => {
+    const newAddresses = addresses.filter(item => item.id !== addressId)
+    setUserState({ ...userState, addresses: newAddresses })
   }
 
   return (
@@ -118,11 +128,24 @@ export default function ProfileSettingsModal({ open, handleClose }) {
           </StyledInputContainer>
         </StyledFlexContainer>
         {isAddressEditOpen ? (
-          <AddressEdit cancelHandle={() => setIsAddressEditOpen(false)} />
+          <AddressEdit
+            cancelHandle={() => setIsAddressEditOpen(false)}
+            addAddress={addAddress}
+          />
         ) : (
-          <Button onClick={() => setIsAddressEditOpen(true)}>
-            Add Address
-          </Button>
+          <>
+            {!!addresses.length && <p>Addresses:</p>}
+            {addresses.map(item => (
+              <AddressInfo
+                key={item.id}
+                address={item}
+                deleteAddressHandle={deleteAddressHandle}
+              />
+            ))}
+            <Button onClick={() => setIsAddressEditOpen(true)}>
+              Add Address
+            </Button>
+          </>
         )}
         <StyledContainerLeft>
           <Button color="secondary" variant="outlined" onClick={handleClose}>
