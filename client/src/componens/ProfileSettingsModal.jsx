@@ -51,7 +51,15 @@ export default function ProfileSettingsModal({ open, handleClose }) {
     formData.append('image', dataToSend.avatar)
     delete dataToSend.avatar
     delete dataToSend.password
-    for (const [key, value] of Object.entries(dataToSend)) {
+    for (let [key, value] of Object.entries(dataToSend)) {
+      if (key === 'addresses' && value) {
+        value = value.map(val => {
+          delete val.id
+          return val
+        })
+        formData.append(key, JSON.stringify(value))
+        continue
+      }
       formData.append(key, value)
     }
     dispatch(updateUser({ id, data: formData }))
@@ -134,8 +142,8 @@ export default function ProfileSettingsModal({ open, handleClose }) {
           />
         ) : (
           <>
-            {!!addresses.length && <p>Addresses:</p>}
-            {addresses.map(item => (
+            {!!addresses?.length && <p>Addresses:</p>}
+            {addresses?.map(item => (
               <AddressInfo
                 key={item.id}
                 address={item}

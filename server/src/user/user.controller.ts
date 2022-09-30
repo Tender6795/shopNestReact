@@ -9,6 +9,7 @@ import { AddRoleDto } from './dto/add-role.dto';
 import { Roles } from 'src/auth/roles-auth.decorator';
 import { RolesGuard } from 'src/auth/roles.guard';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { CreateAddressDto } from 'src/addresses/dto/create-address.dto';
 
 @ApiTags('Users')
 @Controller('user')
@@ -70,11 +71,11 @@ export class UserController {
   }
 
 
-  @ApiOperation({ summary: 'Add address' })
+  @ApiOperation({ summary: 'Add addresses' })
   @ApiResponse({ status: 200, type: User })
   @UseGuards(JwtAuthGuard)
-  @Patch('/address/:addressId')
-  addAddress(@Param('addressId') addressId: string, @Request() req) {
-    return this.userService.addAddress(+addressId , +req.user.id) 
+  @Patch('/addresses')
+  addAddress(@Body() addresses: [CreateAddressDto], @Request() req) {
+    return this.userService.addAddresses(addresses , +req.user.id) 
   }
 }

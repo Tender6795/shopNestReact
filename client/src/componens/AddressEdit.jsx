@@ -11,8 +11,8 @@ export default function AddressEdit({ address, cancelHandle, addAddress }) {
     country: 'Ukraine',
     street: '',
     houseNumber: '',
-    roomNumber: '',
-    postalCode: '',
+    roomNumber: null,
+    postalCode: null,
     id: uuid.v4(),
   }
   
@@ -59,7 +59,8 @@ export default function AddressEdit({ address, cancelHandle, addAddress }) {
         name="roomNumber"
         key="roomNumber"
         label={'room number'}
-        value={roomNumber || ''}
+        type='number'
+        value={roomNumber }
         onChange={handleChangeInput}
       />
 
@@ -67,7 +68,8 @@ export default function AddressEdit({ address, cancelHandle, addAddress }) {
         name="postalCode"
         key="postalCode"
         label={'postal code'}
-        value={postalCode || ''}
+        type='number'
+        value={postalCode }
         onChange={handleChangeInput}
       />
       <StyledButtonContainer>

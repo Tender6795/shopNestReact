@@ -1,12 +1,12 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
-import { IsEmail, IsOptional, IsString, Length } from "class-validator";
+import {  IsOptional, IsString, Length } from "class-validator";
+import { Address } from 'src/addresses/entities/address.entity';
 import { CreateUserDto } from './create-user.dto';
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {
     @ApiProperty({ example: 'user@gmail.com', description: 'Unique email' , required: false  })
     @IsOptional()
-    @IsString({ message: 'must be string1' })
-    @IsEmail({}, { message: 'must be email' })
+    @IsString({ message: 'must be string' })
     readonly email?: string;
 
     @ApiProperty({ example: 'dsdsfsdfsd', description: 'password' , required: false})
@@ -34,4 +34,9 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
     @IsOptional()
     @IsString({ message: 'must be string' })
     readonly avatar?: string;
+
+    @ApiProperty({ example: 'addresses', description: 'addresses', required: false })
+    @IsOptional()
+    readonly addresses?: string | [Address];
+
 }
