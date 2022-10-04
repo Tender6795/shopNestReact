@@ -18,7 +18,7 @@ export class AddressesService {
   }
 
   async findAll() {
-    const address = await this.addressesRepository.findAll()
+    const address = await this.addressesRepository.findAll({include: { all: true }})
     return address
   }
 

@@ -25,4 +25,12 @@ export class CreateAddressDto {
     @ApiProperty({ example: '42', description: 'postal code' })
     @IsNumber({}, { message: 'must be number' })
     readonly postalCode: number;
+
+    @ApiProperty({ example: '42-42-42', description: 'phone number' })
+    @IsString({ message: 'must be string' })
+    readonly phoneNumber: string;
+
+    @ApiProperty({ example: '42', description: 'userId' })
+    @IsNumber({}, { message: 'must be number' })
+    readonly userId: number;
 }

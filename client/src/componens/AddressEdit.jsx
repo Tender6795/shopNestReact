@@ -13,6 +13,7 @@ export default function AddressEdit({ address, cancelHandle, addAddress }) {
     houseNumber: '',
     roomNumber: null,
     postalCode: null,
+    phoneCode:null,
     id: uuid.v4(),
   }
   
@@ -30,7 +31,7 @@ export default function AddressEdit({ address, cancelHandle, addAddress }) {
     addAddress(addressState)
     cancelHandle()
   }
-  const { country, street, houseNumber, roomNumber, postalCode, id } = addressState
+  const { country, street, houseNumber, roomNumber, postalCode, id, phoneCode } = addressState
   return (
     <StyledContainer>
       <StyledInput
@@ -72,6 +73,15 @@ export default function AddressEdit({ address, cancelHandle, addAddress }) {
         value={postalCode }
         onChange={handleChangeInput}
       />
+
+<StyledInput
+        name="phoneCode"
+        key="phoneCode"
+        label={'phone code'}
+        type='string'
+        value={phoneCode }
+        onChange={handleChangeInput}
+      />
       <StyledButtonContainer>
         <Button color="success" onClick={saveHandle}>
           <CheckCircleIcon fontSize="large" />
@@ -94,7 +104,7 @@ const StyledButtonContainer = styled('div')(() => ({
   margin: '10px 0',
   width: '40%',
   display: 'flex',
-  justifyContent: 'flex-start',
+  justifyContent: 'center',
 }))
 
 const StyledContainer = styled('div')(() => ({

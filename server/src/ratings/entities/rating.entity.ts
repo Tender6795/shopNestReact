@@ -11,7 +11,7 @@ interface RatingCreateAttr {
 }
 
 
-@Table({ tableName: 'Rating' })
+@Table({ tableName: 'rating' })
 export class Rating  extends Model<Rating, RatingCreateAttr> {
     
     @ApiProperty({ example: '1', description: 'Unique id' })

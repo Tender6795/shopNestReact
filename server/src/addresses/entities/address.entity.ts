@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Model, Table, Column, DataType, BelongsToMany, HasMany, ForeignKey, BelongsTo } from 'sequelize-typescript'
-import { UserAddresses } from 'src/user/entities/user-address.entity';
 import { User } from 'src/user/entities/user.entity';
 
 interface AddressCreationAttr {
@@ -37,6 +36,15 @@ export class Address extends Model< Address, AddressCreationAttr> {
     @Column({ type: DataType.INTEGER, allowNull: false })
     postalCode: number;
 
-    @BelongsToMany(()=>User, ()=> UserAddresses)
-    users: User[];
+    @ApiProperty({ example: '42-42-42', description: 'house number' })
+    @Column({ type: DataType.STRING, allowNull: false })
+    phoneNumber: string;
+
+    @ApiProperty({ example: '1', description: 'user id' })
+    @ForeignKey(()=> User)
+    @Column({ type: DataType.INTEGER })
+    userId : number
+
+    @BelongsTo (()=> User)
+    user: User
 }

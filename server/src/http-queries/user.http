@@ -15,7 +15,7 @@ GET http://localhost:5000/user HTTP/1.1
 ###
 
 //Get by id
-GET http://localhost:5000/user/2 HTTP/1.1
+GET http://localhost:5000/user/32 HTTP/1.1
 
 ###
 

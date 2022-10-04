@@ -17,7 +17,14 @@ export default function ProfileSettingsModal({ open, handleClose }) {
 
   const imgInput = useRef()
 
-  const { firstName, lastName, patronymic, id, avatar, addresses } = userState
+  const {
+    firstName,
+    lastName,
+    patronymic,
+    id,
+    avatar,
+    addresses = [],
+  } = userState
 
   let defaultAvatar =
     'https://png.pngtree.com/png-clipart/20210129/ourlarge/pngtree-default-male-avatar-png-image_2811083.jpg'
@@ -51,6 +58,7 @@ export default function ProfileSettingsModal({ open, handleClose }) {
     formData.append('image', dataToSend.avatar)
     delete dataToSend.avatar
     delete dataToSend.password
+    delete dataToSend.roles
     for (let [key, value] of Object.entries(dataToSend)) {
       if (key === 'addresses' && value) {
         value = value.map(val => {

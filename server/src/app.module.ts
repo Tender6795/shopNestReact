@@ -8,7 +8,6 @@ import { UserModule } from './user/user.module';
 import { User } from './user/entities/user.entity';
 import { AddressesModule } from './addresses/addresses.module';
 import { Address } from './addresses/entities/address.entity';
-import { UserAddresses } from './user/entities/user-address.entity';
 import { FilesModule } from './files/files.module';
 import { ProductsModule } from './products/products.module';
 import { Product } from './products/entities/product.entity';
@@ -45,7 +44,6 @@ import { Rating } from './ratings/entities/rating.entity';
       models: [
         User,
         Address,
-        UserAddresses, 
         Product, 
         Image, 
         Role, 

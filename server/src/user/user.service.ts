@@ -29,7 +29,13 @@ export class UserService {
         password: hashPassword,
         avatar: fileName,
       });
-      const role = await this.roleService.getRoleByValue('USER');
+      let role = await this.roleService.getRoleByValue('USER');
+      if (!role) {
+        role = await this.roleService.create({
+          value: 'USER',
+          description: 'user',
+        });
+      }
       await user.$set('roles', [role.id]);
       user.roles = [role];
       return user;
@@ -64,6 +70,7 @@ export class UserService {
       include: { all: true },
     });
     if (!user) throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+
     const newAddresses = JSON.parse(updateUserDto.addresses + '');
     if (newAddresses.length) {
       await this.addAddresses(newAddresses, id);
@@ -76,7 +83,7 @@ export class UserService {
 
     const isModified = await user.update({
       ...updateUserDto,
-      addresses: newAddresses,
+      addresses: newAddresses || [],
       avatar: fileName,
     });
     if (!isModified)
@@ -108,17 +115,13 @@ export class UserService {
       include: { all: true },
     });
     if (!user) throw new HttpException('User not found', HttpStatus.NOT_FOUND);
-   
+
     addresses.forEach(async (address) => {
       try {
-        const { id } = await this.addressService.create(address);
+        const { id } = await this.addressService.create({ ...address, userId });
         await user.$add('addresses', id);
-        console.log('userId=========', id);
       } catch (error) {
-        throw new HttpException(
-          error.error,
-          HttpStatus.BAD_REQUEST,
-        );
+        throw new HttpException(error.error, HttpStatus.BAD_REQUEST);
       }
     });
   }
